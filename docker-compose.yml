@@ -22,6 +22,24 @@ services:
       - ${MEDIA_PATH}:/opt/recipes/mediafiles
     depends_on:
       - db_recipes
+    environment:
+      - DEBUG
+      - SQL_DEBUG
+      - DEBUG_TOOLBAR
+      - ALLOWED_HOSTS
+      - SECRET_KEY
+      - TIMEZONE
+      - DB_ENGINE
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - FRACTION_PREF_DEFAULT
+      - COMMENT_PREF_DEFAULT
+      - SHOPPING_MIN_AUTOSYNC_INTERVAL
+      - GUNICORN_MEDIA
+      - REVERSE_PROXY_AUTH
 
   nginx_recipes:
     image: nginx:mainline-alpine
