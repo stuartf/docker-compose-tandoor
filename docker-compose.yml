@@ -1,0 +1,35 @@
+version: "3"
+services:
+  db_recipes:
+    restart: always
+    image: postgres:15-alpine
+    volumes:
+      - ${DATA_PATH}/postgresql:/var/lib/postgresql/data
+
+  web_recipes:
+    restart: always
+    image: vabene1111/recipes
+    volumes:
+      - staticfiles:/opt/recipes/staticfiles
+      # Do not make this a bind mount, see https://docs.tandoor.dev/install/docker/#volumes-vs-bind-mounts
+      - nginx_config:/opt/recipes/nginx/conf.d
+      - ${MEDIA_PATH}:/opt/recipes/mediafiles
+    depends_on:
+      - db_recipes
+
+  nginx_recipes:
+    image: nginx:mainline-alpine
+    restart: always
+    ports:
+      - ${PORT}:80
+    depends_on:
+      - web_recipes
+    volumes:
+      # Do not make this a bind mount, see https://docs.tandoor.dev/install/docker/#volumes-vs-bind-mounts
+      - nginx_config:/etc/nginx/conf.d:ro
+      - staticfiles:/static:ro
+      - ${MEDIA_PATH}:/media:ro
+
+volumes:
+  nginx_config:
+  staticfiles:
