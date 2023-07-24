@@ -5,6 +5,12 @@ services:
     image: postgres:15-alpine
     volumes:
       - ${DATA_PATH}/postgresql:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
 
   web_recipes:
     restart: always
@@ -29,6 +35,24 @@ services:
       - nginx_config:/etc/nginx/conf.d:ro
       - staticfiles:/static:ro
       - ${MEDIA_PATH}:/media:ro
+    environment:
+      - DEBUG
+      - SQL_DEBUG
+      - DEBUG_TOOLBAR
+      - ALLOWED_HOSTS
+      - SECRET_KEY
+      - TIMEZONE
+      - DB_ENGINE
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - FRACTION_PREF_DEFAULT
+      - COMMENT_PREF_DEFAULT
+      - SHOPPING_MIN_AUTOSYNC_INTERVAL
+      - GUNICORN_MEDIA
+      - REVERSE_PROXY_AUTH
 
 volumes:
   nginx_config:
